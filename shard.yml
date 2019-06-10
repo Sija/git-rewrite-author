@@ -1,0 +1,23 @@
+name: git-rewrite-author
+version: 0.1.0
+
+authors:
+  - Sijawusz Pur Rahnama <sija@sija.pl>
+
+dependencies:
+  admiral:
+    github: jwaldrip/admiral.cr
+    version: ~> 1.8
+
+development_dependencies:
+  ameba:
+    github: veelenga/ameba
+    version: ~> 0.10.0
+
+targets:
+  git-rewrite-author:
+    main: src/cli.cr
+
+crystal: 0.29.0
+
+license: MIT
