@@ -65,22 +65,22 @@ class GitRewriteAuthor::CLI < Admiral::Command
                 if [ "$GIT_COMMITTER_{{field.upcase}}" = "$OLD_AUTHOR_{{field.upcase}}" ]; then
                     export GIT_COMMITTER_{{field.upcase}}="$AUTHOR_{{field.upcase}}"
                 fi
-              EOF
+                EOF
             end
             io.puts <<-EOF
               if [ "$GIT_AUTHOR_{{field.upcase}}" = "$OLD_AUTHOR_{{field.upcase}}" ]; then
                   export GIT_AUTHOR_{{field.upcase}}="$AUTHOR_{{field.upcase}}"
               fi
-            EOF
+              EOF
           else
             if flags.committer
               io.puts <<-EOF
                 export GIT_COMMITTER_{{field.upcase}}="$AUTHOR_{{field.upcase}}"
-              EOF
+                EOF
             end
             io.puts <<-EOF
               export GIT_AUTHOR_{{field.upcase}}="$AUTHOR_{{field.upcase}}"
-            EOF
+              EOF
           end
         end
       {% end %}
