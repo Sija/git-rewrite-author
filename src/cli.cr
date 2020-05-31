@@ -1,7 +1,6 @@
 require "colorize"
 require "climate"
 require "admiral"
-
 require "./git_rewrite_author"
 
 class GitRewriteAuthor::CLI < Admiral::Command
@@ -31,77 +30,19 @@ class GitRewriteAuthor::CLI < Admiral::Command
     description: "Enables colors.",
     default: true
 
-  define_flag old_name : String,
-    description: "Old author name."
+  {% for field in %w[name email].map(&.id) %}
+    define_flag old_{{ field }} : String,
+      description: "Old author {{ field }}."
 
-  define_flag new_name : String,
-    description: "New author name."
-
-  define_flag old_email : String,
-    description: "Old author email."
-
-  define_flag new_email : String,
-    description: "New author email."
+    define_flag new_{{ field }} : String,
+      description: "New author {{ field }}."
+  {% end %}
 
   protected def fail(message : String? = nil)
     if message = message.presence
       message = "!Error¡: #{message}"
     end
     abort(message.try(&.climatize))
-  end
-
-  private def prepare_env_filter(env)
-    String.build do |io|
-      {% for field in %i(name email).map(&.id) %}
-        if new_author_{{field}} = flags.new_{{field}}
-          env["AUTHOR_{{field.upcase}}"] = new_author_{{field}}
-
-          if old_author_{{field}} = flags.old_{{field}}
-            env["OLD_AUTHOR_{{field.upcase}}"] = old_author_{{field}}
-
-            if flags.committer
-              io.puts <<-EOF
-                if [ "$GIT_COMMITTER_{{field.upcase}}" = "$OLD_AUTHOR_{{field.upcase}}" ]; then
-                    export GIT_COMMITTER_{{field.upcase}}="$AUTHOR_{{field.upcase}}"
-                fi
-                EOF
-            end
-            io.puts <<-EOF
-              if [ "$GIT_AUTHOR_{{field.upcase}}" = "$OLD_AUTHOR_{{field.upcase}}" ]; then
-                  export GIT_AUTHOR_{{field.upcase}}="$AUTHOR_{{field.upcase}}"
-              fi
-              EOF
-          else
-            if flags.committer
-              io.puts <<-EOF
-                export GIT_COMMITTER_{{field.upcase}}="$AUTHOR_{{field.upcase}}"
-                EOF
-            end
-            io.puts <<-EOF
-              export GIT_AUTHOR_{{field.upcase}}="$AUTHOR_{{field.upcase}}"
-              EOF
-          end
-        end
-      {% end %}
-    end
-  end
-
-  private def prepare_command
-    env = {} of String => String
-    cmd = "git"
-    args = [
-      "filter-branch",
-      "--force",
-      "--env-filter",
-      prepare_env_filter(env),
-      "--tag-name-filter",
-      "cat",
-      "--",
-    ]
-    args << "--branches" if flags.branches
-    args << "--tags" if flags.tags
-
-    {env, cmd, args}
   end
 
   def run
@@ -116,32 +57,30 @@ class GitRewriteAuthor::CLI < Admiral::Command
       fail "You must provide <new-name> or <new-email> flag"
     end
 
-    env, cmd, args = prepare_command
+    refs = {% begin %}
+      Rewriter.run(
+        cwd: arguments.cwd,
 
-    begin
-      out_io = IO::Memory.new
-      err_io = IO::Memory.new
+        committer: flags.committer,
+        branches: flags.branches,
+        tags: flags.tags,
 
-      Process
-        .run(cmd, args, shell: true, env: env, chdir: arguments.cwd, output: out_io, error: err_io)
-        .tap do |status|
-          fail(err_io.to_s.chomp) unless status.success?
-        end
+        {% for field in %w[name email].map(&.id) %}
+          old_{{ field }}: flags.old_{{ field }},
+          new_{{ field }}: flags.new_{{ field }},
+        {% end %}
+      )
+    {% end %}
 
-      refs = out_io.to_s
-        .scan(/Ref 'refs\/(.+?)' was rewritten/)
-        .map(&.[1])
-
-      if refs.empty?
-        STDOUT.puts "No changes".colorize.bright
-      else
-        STDOUT << "Rewritten refs: ".colorize(:green)
-        STDOUT << refs.join(", ", &.colorize.bright)
-        STDOUT << '\n'
-      end
-    rescue ex : IO::Error
-      fail(ex.message)
+    if refs
+      STDOUT << "Rewritten refs: ".colorize(:green)
+      STDOUT << refs.join(", ", &.colorize.bright)
+      STDOUT << '\n'
+    else
+      STDOUT.puts "No changes".colorize.bright
     end
+  rescue ex
+    fail(ex.message)
   end
 end
 
