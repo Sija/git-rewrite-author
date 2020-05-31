@@ -8,3 +8,7 @@ shards:
     github: veelenga/ameba
     version: 0.12.1
 
+  climate:
+    github: Sija/climate.cr
+    version: 0.2.0
+

@@ -1,4 +1,5 @@
 require "colorize"
+require "climate"
 require "admiral"
 
 require "./git_rewrite_author"
@@ -43,12 +44,10 @@ class GitRewriteAuthor::CLI < Admiral::Command
     description: "New author email."
 
   protected def fail(message : String? = nil)
-    if message && !message.blank?
-      STDERR << "Failed: ".colorize(:red)
-      STDERR << message.chomp.colorize.bright
-      STDERR << '\n'
+    if message = message.presence
+      message = "!Error¡: #{message}"
     end
-    exit 1
+    abort(message.try(&.climatize))
   end
 
   private def prepare_env_filter(env)
@@ -106,14 +105,15 @@ class GitRewriteAuthor::CLI < Admiral::Command
   end
 
   def run
+    Climate.configure do |settings|
+      settings.use_defaults!
+    end
+
     Colorize.on_tty_only!
     Colorize.enabled = false unless flags.color
 
     unless flags.new_name || flags.new_email
-      fail "You must provide " \
-           "#{"--new-name".colorize(:green)}" \
-           " or " \
-           "#{"--new-email".colorize(:green)}"
+      fail "You must provide <new-name> or <new-email> flag"
     end
 
     env, cmd, args = prepare_command
@@ -125,7 +125,7 @@ class GitRewriteAuthor::CLI < Admiral::Command
       Process
         .run(cmd, args, shell: true, env: env, chdir: arguments.cwd, output: out_io, error: err_io)
         .tap do |status|
-          fail(err_io.to_s) unless status.success?
+          fail(err_io.to_s.chomp) unless status.success?
         end
 
       refs = out_io.to_s
