@@ -139,7 +139,7 @@ class GitRewriteAuthor::CLI < Admiral::Command
         STDOUT << refs.join(", ", &.colorize.bright)
         STDOUT << '\n'
       end
-    rescue ex : Errno
+    rescue ex : IO::Error
       fail(ex.message)
     end
   end
