@@ -1,18 +1,36 @@
-# git-rewrite-author [![Build Status](https://travis-ci.org/Sija/git-rewrite-author.svg?branch=master)](https://travis-ci.org/Sija/git-rewrite-author) [![Releases](https://img.shields.io/github/release/Sija/git-rewrite-author.svg)](https://github.com/Sija/git-rewrite-author/releases) [![License](https://img.shields.io/github/license/Sija/git-rewrite-author.svg)](https://github.com/Sija/git-rewrite-author/blob/master/LICENSE)
+# git-rewrite-author [![Build Status](https://travis-ci.com/Sija/git-rewrite-author.svg?branch=master)](https://travis-ci.com/Sija/git-rewrite-author) [![Releases](https://img.shields.io/github/release/Sija/git-rewrite-author.svg)](https://github.com/Sija/git-rewrite-author/releases) [![License](https://img.shields.io/github/license/Sija/git-rewrite-author.svg)](https://github.com/Sija/git-rewrite-author/blob/master/LICENSE)
 
-TODO: Write a description here
+Rewrite authorship information within a history of a git repository.
+
+## Editing Past Commits Rewrites History!
+
+> No matter how exactly we change the information of past commits, there's one thing to always keep in mind: if we do this, we are effectively rewriting commit history.
+> This is nothing to take lightly: you will create new commit objects in this process, which can become a serious problem for your collaborators - because they might have already based new work on some of the original commits.
+> Therefore, think twice before you rewrite your commit history!
+
+Further reading:
+
+- https://help.github.com/en/github/using-git/changing-author-info
+- https://www.git-tower.com/learn/git/faq/change-author-name-email
 
 ## Installation
 
-TODO: Write installation instructions here
+```console
+$ make build
+```
+
+In order to use it system-wide you need to copy the resulting binary into
+your preferred `bin` location (`/usr/local/bin` by default).
+
+```console
+$ make install [prefix=/usr/local/bin]
+```
 
 ## Usage
 
-TODO: Write usage instructions here
-
-## Development
-
-TODO: Write development instructions here
+```console
+$ git rewrite-author [--committer] [--branches] [--tags] [--old-email ...] [--new-email ...] [--old-name ...] [--new-name ...] [cwd]
+```
 
 ## Contributing
 
