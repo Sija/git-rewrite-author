@@ -52,7 +52,6 @@ class GitRewriteAuthor::CLI < Admiral::Command
   end
 
   private def prepare_env_filter(env)
-    # ameba:disable Lint/UnusedArgument
     String.build do |io|
       {% for field in %i(name email).map(&.id) %}
         if new_author_{{field}} = flags.new_{{field}}
