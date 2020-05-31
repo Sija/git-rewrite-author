@@ -1,5 +1,3 @@
 module GitRewriteAuthor
-  {% begin %}
-    VERSION = "{{ `shards version`.chomp }}"
-  {% end %}
+  VERSION = {{ `shards version "#{__DIR__}"`.chomp.stringify }}
 end
