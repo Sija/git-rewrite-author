@@ -8,6 +8,11 @@ jobs:
   allow_failures:
     - crystal: nightly
 
+addons:
+  apt:
+    packages:
+      - git
+
 install:
   - shards install
 
