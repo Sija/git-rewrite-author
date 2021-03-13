@@ -1,14 +1,14 @@
-version: 1.0
+version: 2.0
 shards:
   admiral:
-    github: jwaldrip/admiral.cr
+    git: https://github.com/jwaldrip/admiral.cr.git
     version: 1.11.2
 
   ameba:
-    github: veelenga/ameba
-    version: 0.12.1
+    git: https://github.com/veelenga/ameba.git
+    version: 0.14.0
 
   climate:
-    github: Sija/climate.cr
+    git: https://github.com/Sija/climate.cr.git
     version: 0.2.0
 

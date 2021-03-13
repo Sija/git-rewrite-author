@@ -46,9 +46,7 @@ class GitRewriteAuthor::CLI < Admiral::Command
   end
 
   def run
-    Climate.configure do |settings|
-      settings.use_defaults!
-    end
+    Climate.settings.use_defaults!
 
     Colorize.on_tty_only!
     Colorize.enabled = false unless flags.color
