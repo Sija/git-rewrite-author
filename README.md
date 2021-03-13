@@ -1,4 +1,4 @@
-# git-rewrite-author [![Build Status](https://travis-ci.com/Sija/git-rewrite-author.svg?branch=master)](https://travis-ci.com/Sija/git-rewrite-author) [![Releases](https://img.shields.io/github/release/Sija/git-rewrite-author.svg)](https://github.com/Sija/git-rewrite-author/releases) [![License](https://img.shields.io/github/license/Sija/git-rewrite-author.svg)](https://github.com/Sija/git-rewrite-author/blob/master/LICENSE)
+# git-rewrite-author [![CI](https://github.com/Sija/git-rewrite-author/actions/workflows/ci.yml/badge.svg)](https://github.com/Sija/git-rewrite-author/actions/workflows/ci.yml) [![Releases](https://img.shields.io/github/release/Sija/git-rewrite-author.svg)](https://github.com/Sija/git-rewrite-author/releases) [![License](https://img.shields.io/github/license/Sija/git-rewrite-author.svg)](https://github.com/Sija/git-rewrite-author/blob/master/LICENSE)
 
 Rewrite authorship information within a history of a git repository.
 
