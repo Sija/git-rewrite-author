@@ -8,7 +8,7 @@ def repo_path
   Path[Dir.tempdir, REPO_NAME].to_s
 end
 
-def within_repo_path
+def within_repo_path(&)
   Dir.cd(repo_path) { yield }
 end
 
@@ -74,7 +74,7 @@ def git_commits(rev = "HEAD", *, fields = nil)
   end
 end
 
-def git_commits_changes(fields = nil)
+def git_commits_changes(fields = nil, &)
   old_commits = git_commits(fields: fields)
   yield
   new_commits = git_commits(fields: fields)

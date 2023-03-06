@@ -6,7 +6,7 @@ shards:
 
   ameba:
     git: https://github.com/veelenga/ameba.git
-    version: 1.2.0
+    version: 1.4.2
 
   climate:
     git: https://github.com/sija/climate.cr.git
