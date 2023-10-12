@@ -14,8 +14,8 @@ dependencies:
 
 development_dependencies:
   ameba:
-    github: veelenga/ameba
-    version: ~> 1.4.0
+    github: crystal-ameba/ameba
+    version: ~> 1.5.0
 
 targets:
   git-rewrite-author:

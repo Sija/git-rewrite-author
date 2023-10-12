@@ -5,8 +5,8 @@ shards:
     version: 1.12.1
 
   ameba:
-    git: https://github.com/veelenga/ameba.git
-    version: 1.4.2
+    git: https://github.com/crystal-ameba/ameba.git
+    version: 1.5.0
 
   climate:
     git: https://github.com/sija/climate.cr.git
